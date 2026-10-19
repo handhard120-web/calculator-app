@@ -1,0 +1,122 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #0f172a;
+  font-family: sans-serif;
+  margin: 0;
+  overflow: hidden;
+}
+.calculator {
+  position: relative;
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 20px;
+  width: 360px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+}
+.calc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #64748b;
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+}
+.tab-btn {
+  background: #334155;
+  color: #94a3b8;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+#display {
+  width: 100%;
+  height: 60px;
+  font-size: 2rem;
+  text-align: right;
+  border: none;
+  background: rgba(15, 23, 42, 0.4); 
+  border-radius: 10px;
+  padding: 0 10px;
+  color: #fff;
+  outline: none;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+button {
+  height: 50px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 10px;
+  background: #334155;
+  color: #fff;
+  cursor: pointer;
+}
+button:hover { background: #475569; }
+.equal { grid-column: span 2; background: #10b981; }
+.operator { background: #4f46e5; }
+.clear { background: #ef4444; }
+.backspace-btn { background: #d97706; }
+.advanced { background: #475569; color: #cbd5e1; }
+.panel {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #1e293b;
+  box-sizing: border-box;
+  padding: 20px;
+  transition: top 0.3s ease;
+  color: #fff;
+}
+.p-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #334155;
+  padding-bottom: 10px;
+}
+.sub-tabs {
+  display: flex;
+  gap: 4px;
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+.sub-tabs button {
+  flex: 1;
+  height: 32px;
+  font-size: 0.75rem;
+  background: #334155;
+  color: #cbd5e1;
+  border-radius: 6px;
+}
+.sub-tabs button:hover {
+  background: #475569;
+  color: #fff;
+}
+.c-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+.c-box input {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  height: 40px;
+  padding: 5px;
+  color: #fff;
+  font-size: 1rem;
+}

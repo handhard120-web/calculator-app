@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Sci Calc Pro</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="calculator">
+    <div class="calc-header">
+      <span>SCIENTIFIC PRO</span>
+      <div>
+        <button onclick="toggleTab('conv')">📏 Conv</button>
+        <button onclick="toggleTab('hist')">🕒 Hist</button>
+      </div>
+    </div>
+    <input type="text" id="display" placeholder="0">
+    <div class="buttons">
+      <button onclick="clr()" class="clear">C</button>
+      <button onclick="bs()" class="backspace-btn">⌫</button>
+      <button onclick="add('(')" class="advanced">(</button>
+      <button onclick="add(')')" class="advanced">)</button>
+      <button onclick="add('/')" class="operator">/</button>
+      <button onclick="add('sin(')" class="advanced">sin</button>
+      <button onclick="add('cos(')" class="advanced">cos</button>
+      <button onclick="add('tan(')" class="advanced">tan</button>
+      <button onclick="add('log(')" class="advanced">log</button>
+      <button onclick="add('*')" class="operator">*</button>
+      <button onclick="add('csc(')" class="advanced">csc</button>
+      <button onclick="add('sec(')" class="advanced">sec</button>
+      <button onclick="add('cot(')" class="advanced">cot</button>
+      <button onclick="add('sqrt(')" class="advanced">√</button>
+      <button onclick="add('-')" class="operator">-</button>
+      <button onclick="add('7')">7</button>
+      <button onclick="add('8')">8</button>
+      <button onclick="add('9')">9</button>
+      <button onclick="add('^2')" class="advanced">x²</button>
+      <button onclick="add('+')" class="operator">+</button>
+      <button onclick="add('4')">4</button>
+      <button onclick="add('5')">5</button>
+      <button onclick="add('6')">6</button>
+      <button onclick="add('0')">0</button>
+      <button onclick="add('.')">.</button>
+      <button onclick="add('1')">1</button>
+      <button onclick="add('2')">2</button>
+      <button onclick="add('3')">3</button>
+      <button onclick="eq()" class="equal">=</button>
+    </div>
+    
+    <div id="hist" class="panel">
+      <div class="p-head">
+        <h3>History</h3>
+        <button onclick="toggleTab('none')">✕ Close</button>
+      </div>
+      <div id="h-list"><div class="empty">No entries</div></div>
+    </div>
+    
+    <div id="conv" class="panel">
+      <div class="p-head">
+        <h3>Converter</h3>
+        <button onclick="toggleTab('none')">✕ Close</button>
+      </div>
+      
+      <div class="sub-tabs">
+        <button onclick="switchMode('len')">Len</button>
+        <button onclick="switchMode('wei')">Wei</button>
+        <button onclick="switchMode('tim')">Tim</button>
+        <button onclick="switchMode('cur')">Cur</button>
+        <button onclick="switchMode('tmp')">Temp</button>
+      </div>
+
+      <div id="box-len" class="c-box mode-group">
+        <label>Centimeter (cm)</label>
+        <input type="number" id="cm" oninput="runLen('cm')">
+        <label>Meter (m)</label>
+        <input type="number" id="m" oninput="runLen('m')">
+        <label>Kilometer (km)</label>
+        <input type="number" id="km" oninput="runLen('km')">
+      </div>
+
+      <div id="box-wei" class="c-box mode-group" style="display:none;">
+        <label>Milligram (mg)</label>
+        <input type="number" id="mg" oninput="runWei('mg')">
+        <label>Gram (g)</label>
+        <input type="number" id="g" oninput="runWei('g')">
+        <label>Kilogram (kg)</label>
+        <input type="number" id="kg" oninput="runWei('kg')">
+      </div>
+
+      <div id="box-tim" class="c-box mode-group" style="display:none;">
+        <label>Second (s)</label>
+        <input type="number" id="s" oninput="runTim('s')">
+        <label>Minute (min)</label>
+        <input type="number" id="min" oninput="runTim('min')">
+        <label>Hour (hr)</label>
+        <input type="number" id="hr" oninput="runTim('hr')">
+      </div>
+
+      <div id="box-cur" class="c-box mode-group" style="display:none;">
+        <label>Microampere (µA)</label>
+        <input type="number" id="ua" oninput="runCur('ua')">
+        <label>Milliampere (mA)</label>
+        <input type="number" id="ma" oninput="runCur('ma')">
+        <label>Ampere (A)</label>
+        <input type="number" id="amp" oninput="runCur('amp')">
+      </div>
+
+      <div id="box-tmp" class="c-box mode-group" style="display:none;">
+        <label>Celsius (°C)</label>
+        <input type="number" id="tc" oninput="runTmp('tc')">
+        <label>Fahrenheit (°F)</label>
+        <input type="number" id="tf" oninput="runTmp('tf')">
+        <label>Kelvin (K)</label>
+        <input type="number" id="tk" oninput="runTmp('tk')">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let d = document.getElementById('display');
+    let hl = document.getElementById('h-list');
+    
+    function add(v) { 
+      let start = d.selectionStart;
+      let end = d.selectionEnd;
+      let text = d.value;
+      d.value = text.substring(0, start) + v + text.substring(end);
+      d.selectionStart = d.selectionEnd = start + v.length;
+      d.focus();
+    }
+    
+    function clr() { d.value = ''; d.focus(); }
+    
+    function toggleTab(id) {
+      document.getElementById('hist').style.top = '-100%';
+      document.getElementById('conv').style.top = '-100%';
+      if(id !== 'none') document.getElementById(id).style.top = '0';
+    }
+    
+    function bs() {
+      let start = d.selectionStart;
+      let end = d.selectionEnd;
+      let v = d.value;
+      if (start === 0 && end === 0) return;
+      if (start !== end) {
+        d.value = v.substring(0, start) + v.substring(end);
+        d.selectionStart = d.selectionEnd = start;
+      } else {
+        d.value = v.substring(0, start - 1) + v.substring(start);
+        d.selectionStart = d.selectionEnd = start - 1;
+      }
+      d.focus();
+    }
+
+    function switchMode(m) {
+      let groups = document.querySelectorAll('.mode-group');
+      groups.forEach(g => g.style.display = 'none');
+      document.getElementById('box-' + m).style.display = 'flex';
+      let inputs = document.querySelectorAll('.c-box input');
+      inputs.forEach(i => i.value = '');
+    }
+
+    function runLen(src) {
+      let c = document.getElementById('cm');
+      let m = document.getElementById('m');
+      let k = document.getElementById('km');
+      let v = parseFloat(document.getElementById(src).value);
+      if(isNaN(v)) { c.value=''; m.value=''; k.value=''; return; }
+      if(src==='cm'){ m.value=v/100; k.value=v/100000; }
+      if(src==='m'){ c.value=v*100; k.value=v/1000; }
+      if(src==='km'){ c.value=v*100000; m.value=v*1000; }
+    }
+
+    function runWei(src) {
+      let mg = document.getElementById('mg');
+      let g = document.getElementById('g');
+      let kg = document.getElementById('kg');
+      let v = parseFloat(document.getElementById(src).value);
+      if(isNaN(v)) { mg.value=''; g.value=''; kg.value=''; return; }
+      if(src==='mg'){ g.value=v/1000; kg.value=v/1000000; }
+      if(src==='g'){ mg.value=v*1000; kg.value=v/1000; }
+      if(src==='kg'){ mg.value=v*1000000; g.value=v*1000; }
+    }
+
+    function runTim(src) {
+      let s = document.getElementById('s');
+      let min = document.getElementById('min');
+      let hr = document.getElementById('hr');
+      let v = parseFloat(document.getElementById(src).value);
+      if(isNaN(v)) { s.value=''; min.value=''; hr.value=''; return; }
+      if(src==='s'){ min.value=v/60; hr.value=v/3600; }
+      if(src==='min'){ s.value=v*60; hr.value=v/60; }
+      if(src==='hr'){ s.value=v*3600; min.value=v*60; }
+    }
+
+    function runCur(src) {
+      let ua = document.getElementById('ua');
+      let ma = document.getElementById('ma');
+      let amp = document.getElementById('amp');
+      let v = parseFloat(document.getElementById(src).value);
+      if(isNaN(v)) { ua.value=''; ma.value=''; amp.value=''; return; }
+      if(src==='ua'){ ma.value=v/1000; amp.value=v/1000000; }
+      if(src==='ma'){ ua.value=v*1000; amp.value=v/1000; }
+      if(src==='amp'){ ua.value=v*1000000; ma.value=v*1000; }
+    }
+
+    function runTmp(src) {
+      let c = document.getElementById('tc');
+      let f = document.getElementById('tf');
+      let k = document.getElementById('tk');
+      let v = parseFloat(document.getElementById(src).value);
+      if(isNaN(v)) { c.value=''; f.value=''; k.value=''; return; }
+      if(src==='tc'){ f.value=(v*9/5)+32; k.value=v+273.15; }
+      if(src==='tf'){ c.value=(v-32)*5/9; k.value=((v-32)*5/9)+273.15; }
+      if(src==='tk'){ c.value=v-273.15; f.value=((v-273.15)*9/5)+32; }
+    }
+
+    function eq() {
+      let exp = d.value;
+      if(!exp) return;
+      try {
+        let s = (x) => Math.sin(x * Math.PI / 180);
+        let c = (x) => Math.cos(x * Math.PI / 180);
+        let t = (x) => Math.tan(x * Math.PI / 180);
+        let cs = (x) => 1 / s(x);
+        let sc = (x) => 1 / c(x);
+        let ct = (x) => 1 / t(x);
+        let lg = (x) => Math.log10(x);
+        let sq = (x) => Math.sqrt(x);
+        
+        // Clean vertical string mapping structure
+        let p = exp;
+        p = p.replaceAll('sin(', 's(');
+        p = p.replaceAll('cos(', 'c(');
+        p = p.replaceAll('tan(', 't(');
+        p = p.replaceAll('csc(', 'cs(');
+        p = p.replaceAll('sec(', 'sc(');
+        p = p.replaceAll('cot(', 'ct(');
+        p = p.replaceAll('log(', 'lg(');
+        p = p.replaceAll('sqrt(', 'sq(');
+        p = p.replaceAll('^2', '**2');
+
+        let res = eval(p);
+        if(typeof res === 'number' && !isNaN(res) && isFinite(res)) {
+          let ans = Math.round(res * 100000) / 100000;
+          d.value = ans;
+          if(hl.querySelector('.empty')) hl.innerHTML = '';
+          hl.innerHTML = `<div>${exp} = ${ans}</div>` + hl.innerHTML;
+        } else { d.value = "Error"; }
+      } catch(e) { d.value = "Error"; }
+      d.focus();
+    }
+  </script>
+</body>
+</html>
